@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "input.h"
-
-#define true 1
-#define false 0
-
-typedef unsigned char boolean;
+#include "arquivo.h"
 
 typedef struct
 {
@@ -24,19 +20,10 @@ unsigned int opcao_menu();
 void limpa_retirada(T_Retirada* retirada);
 boolean fazer_retirada(T_Retirada* retirada);
 void fazer_devolucao(T_Retirada* retiradas, unsigned int qtd_retiradas);
-
 void escreve_retiradas(FILE* arq, T_Retirada* retiradas, unsigned int qtd_retiradas);
 unsigned int le_retiradas(FILE* arq, T_Retirada** retiradas);
 void escreve_retirada(FILE* arq, T_Retirada* retirada);
 void le_retirada(FILE* arq, T_Retirada* retirada);
-void escreve_boolean(FILE* arq, boolean* var);
-void escreve_int(FILE* arq, unsigned int* var);
-void escreve_float(FILE* arq, float* var);
-void escreve_str(FILE* arq, char* str);
-void le_boolean(FILE* arq, boolean* var);
-void le_int(FILE* arq, unsigned int* var);
-void le_float(FILE* arq, float* var);
-void le_str(FILE* arq, char** str);
 
 int main(int argc, char* argv[])
 {
@@ -276,52 +263,4 @@ void le_retirada(FILE* arq, T_Retirada* retirada)
     le_float(arq, &(retirada->vl_km_extra));
     le_str(arq, &(retirada->data_retirada));
     le_boolean(arq, &(retirada->devolvido));
-}
-
-void escreve_boolean(FILE* arq, boolean* var)
-{
-    fwrite(var, sizeof(boolean), 1, arq);
-}
-
-void le_boolean(FILE* arq, boolean* var)
-{
-    fread(var, sizeof(boolean), 1, arq);
-}
-
-void escreve_int(FILE* arq, unsigned int* var)
-{
-    fwrite(var, sizeof(unsigned int), 1, arq);
-}
-
-void le_int(FILE* arq, unsigned int* var)
-{
-    fread(var, sizeof(unsigned int), 1, arq);
-}
-
-void escreve_float(FILE* arq, float* var)
-{
-    fwrite(var, sizeof(float), 1, arq);
-}
-
-void le_float(FILE* arq, float* var)
-{
-    fread(var, sizeof(float), 1, arq);
-}
-
-void escreve_str(FILE* arq, char* str)
-{
-    int len = strlen(str);
-    fwrite(&len, sizeof(int), 1, arq);
-    fwrite(str, sizeof(char), len, arq);
-}
-
-void le_str(FILE* arq, char** str)
-{
-    int len;
-    fread(&len, sizeof(int), 1, arq);
-
-    *str = malloc((len+1) * sizeof(char));
-    memset(*str, 0, (len+1) * sizeof(char));
-
-    fread(*str, sizeof(char), len, arq);
 }
